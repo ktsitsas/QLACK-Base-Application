@@ -2,7 +2,8 @@ version: '3'
 
 services:
   ui:
-    build: qlack-base-application-ui
+    build:
+      context: ./qlack-base-application-ui
     image: qlack/qba-ui:3.2.2-SNAPSHOT
     container_name: qba-ui
     restart: unless-stopped
@@ -11,7 +12,8 @@ services:
     ports:
       - "6565:80"
   server:
-    build: qlack-base-application-server
+    build:
+      context: ./qlack-base-application-server
     image: qlack/qba-server:3.2.2-SNAPSHOT
     container_name: qba-server
     restart: unless-stopped
