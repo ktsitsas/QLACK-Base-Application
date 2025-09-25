@@ -73,7 +73,7 @@ The supplied build scripts provide two interesting features:
 A top-level Docker Compose file is also provided, allowing you to build and run the complete application
 stack in just a single command:
 
-`docker compose up --build`
+`docker compose up`
 
 The application becomes accessible on port 6565, i.e. http://localhost:6565.
 
