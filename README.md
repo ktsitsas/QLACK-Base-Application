@@ -55,16 +55,6 @@ start your new project by cloning this repo and then built on top of it.
 
 ![](doc/9.gif)
 
-## Development setup
-
-To start the back-end component, issue:
-
-`mvn spring-boot:run`
-
-To start the front-end component, issue:
-
-`npm start`
-
 ## Containers support
 
 Both the front-end and the back-end component come with a `Dockerfile` allowing you to build Docker
@@ -77,7 +67,7 @@ The supplied build scripts provide two interesting features:
   any additional setup.
 
 * Image building follows a multi-stage approach. Expensive operations (such as downloading Maven
-  artifacts or NodeJS packages) takes place in a previous phase of your build, allowing you to skip
+  artifacts or NodeJS packages) take place in a previous phase of your build, allowing you to skip
   those phases in future builds (provided your dependencies remain the same).
 
 A top-level Docker Compose file is also provided, allowing you to build and run the complete application
@@ -86,6 +76,20 @@ stack in just a single command:
 `docker compose up --build`
 
 The application becomes accessible on port 6565, i.e. http://localhost:6565.
+
+## Development setup
+
+To start the back-end component, install Java 21+ and Apache Maven 3.9.9+ and then issue:
+
+`mvn spring-boot:run`
+
+To start the front-end component, install Node.js and issue:
+
+`npm install`
+
+then
+
+`npm start`
 
 ## Extra Security Feature CustomCookieFilter
 
@@ -108,7 +112,7 @@ To implement this functionality, the following line of code should be added to y
 `SecurityFilterChain`:
 
 ```java
-.addFilterBefore(customCookieFilter, BasicAuthenticationFilter .class)
+.addFilterBefore(customCookieFilter, BasicAuthenticationFilter.class);
 ```
 
 Additionally, the following properties should be added to your application file:
@@ -129,11 +133,11 @@ Ensure these configurations are in place for the filter to function correctly.
 There are 25 Angular unit tests as examples to demonstrate testing for Components and Services. The unit tests are the
 files with naming ending with .spec.ts. You can find the tests at folders "login", "logout", "employee".
 
+### Karma unit tests report
+
 The unit tests are using Jasmine and Karma. All the configurations to use Jasmine and Karma are located inside the
 `karma.conf.js` file. Open a terminal in `qlack-base-application-ui` folder and run the unit tests by typing the 
 command `npm run test`.
-
-### Karma unit tests report
 
 The report of unit tests will be as shown in the screenshot.
 ![](doc/10.png)
@@ -143,8 +147,7 @@ The report of unit tests will be as shown in the screenshot.
 In the same terminal you can run the command "npm run karma_coverage" to get the code coverage.
 The report of code coverage will be as shown in the screenshot.
 ![](doc/11.png)
-The karma code coverage module will also create a code coverage report which you will find it in the path "
-coverage/qlack_base_application_ui".
+The karma code coverage module will also create a code coverage report which you will find it in the path `coverage/qlack_base_application_ui`.
 The html report of the code coverage will be as shown in the screenshot.
 ![](doc/12.png)
 
