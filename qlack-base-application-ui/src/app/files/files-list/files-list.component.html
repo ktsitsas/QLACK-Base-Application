@@ -27,6 +27,7 @@
           <th cdk-header-cell *matHeaderCellDef mat-sort-header scope="col"></th>
           <td cdk-cell *cdkCellDef="let element">
             <button class="btn btn-sm btn-ghost" (click)="download(element.id)">DOWNLOAD</button>
+            <button class="btn btn-sm btn-ghost" (click)="delete(element.id)">DELETE</button>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
