@@ -14,6 +14,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import {QFormsService} from "@qlack/forms";
 import {CdkCell, CdkCellDef, CdkColumnDef, CdkHeaderCell, CdkTable} from "@angular/cdk/table";
 import {RouterLink} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {OkCancelModalComponent} from "../../shared/component/ok-cancel-modal/ok-cancel-modal.component";
+import {UtilityService} from "../../shared/service/utility.service";
 
 @Component({
     selector: "app-files",
@@ -27,7 +30,8 @@ export class FilesListComponent implements AfterViewInit {
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
-  constructor(private filesService: FilesService, private qForms: QFormsService) {
+  constructor(private filesService: FilesService, private qForms: QFormsService,
+              private dialog: MatDialog, private utilityService: UtilityService) {
   }
 
   ngAfterViewInit(): void {
@@ -42,7 +46,6 @@ export class FilesListComponent implements AfterViewInit {
   }
 
   fetchData(page: number, size: number, sort: string, sortDirection: string) {
-
     this.filesService.getAll(this.qForms.makeQueryStringForData(null, [], false, page, size,
       sort, sortDirection)).subscribe({
       next: onNext => {
@@ -53,12 +56,32 @@ export class FilesListComponent implements AfterViewInit {
   }
 
   changePage() {
-    this.fetchData(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active,
-      this.sort.start);
+    this.fetchData(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.start);
   }
 
   download(id: string) {
     this.filesService.download(id);
   }
+
+  delete(id: any) {
+    const dialogRef = this.dialog.open(OkCancelModalComponent, {
+      data: {
+        title: "Delete file",
+        question: "Do you really want to delete this file?",
+        buttons: {
+          ok: true, cancel: true, reload: false
+        }
+      }
+    });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.filesService.delete(id).subscribe(() => {
+          this.utilityService.popupSuccess("File successfully deleted.");
+          this.ngAfterViewInit();
+        });
+      }
+    });
+  }
+
 }
 
