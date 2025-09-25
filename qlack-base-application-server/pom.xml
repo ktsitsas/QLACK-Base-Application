@@ -23,6 +23,7 @@
     <jackson.version>2.18.0</jackson.version>
     <jacoco.version>0.8.12</jacoco.version>
     <maven.compiler.version>3.13.0</maven.compiler.version>
+    <maven.compiler.release>21</maven.compiler.release>
   </properties>
 
   <dependencyManagement>
