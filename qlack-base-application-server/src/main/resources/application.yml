@@ -39,7 +39,7 @@ qlack:
       cookie-cache-clean-timer: 0 * * ? * * # the scheduler where we clean cache from non-valid cookies
       login-path: '/users/auth'
       logout-path: '/users/logout'
-      ignore-paths: '/users/auth, /i18n/*, /error'
+      ignore-paths: '/i18n/*, /error'
 
 logging:
   level:
