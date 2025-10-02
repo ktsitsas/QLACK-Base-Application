@@ -15,8 +15,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class WebSecurityConfig {
 
-    @Value("${qlack.util.csrf.ignore-paths:#{null}}")
+    @Value("${qlack.util.csrf.ignore-paths:#{new ArrayList()}}")
     private List<String> IGNORED_PATHS;
+
+    @Value("${qlack.util.csrf.login-path:#{null}}")
+    private String LOGIN_PATH;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -29,15 +32,18 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        final String[] PUBLIC_URIS = IGNORED_PATHS!=null ? IGNORED_PATHS.toArray(new String[IGNORED_PATHS.size()]) : new String[0];
+        if (LOGIN_PATH != null) {
+            IGNORED_PATHS.add(LOGIN_PATH);
+        }
+        final String[] PUBLIC_URIS = IGNORED_PATHS.stream().toArray(String[]::new);
         http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(requests -> requests
-                .requestMatchers(PUBLIC_URIS).permitAll()
-                .anyRequest().authenticated())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(customCookieFilter, BasicAuthenticationFilter.class)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(PUBLIC_URIS).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(customCookieFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
